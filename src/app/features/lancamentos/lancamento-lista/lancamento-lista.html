@@ -1,0 +1,36 @@
+<h1 style="color: red; font-size: 50px;">DEU CERTO, A LISTA CARREGOU!</h1>
+<!-- ALTERADO: passa o selecionado e escuta salvou/cancelou -->
+<app-lancamento-form
+  [usuarioId]="usuarioId"
+  [lancamentoSelecionado]="lancamentoSelecionado()"
+  (salvou)="carregar(); cancelarEdicao()"
+  (cancelou)="cancelarEdicao()"
+/>
+
+<h2>Lançamentos financeiros</h2>
+@if (carregando()) { <p>Carregando...</p> }
+@if (erro()) { <div class="alert alert-danger">{{ erro() }}</div> }
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Descrição</th>
+      <th>Categoria</th>
+      <th>Data</th>
+      <th>Valor</th>
+      <th>Ações</th> <!-- ADICIONADO -->
+    </tr>
+  </thead>
+  <tbody>
+    @for (l of lancamentos(); track l.id) {
+      <tr>
+        <td>{{ l.descricao }}</td>
+        <td>{{ l.categoriaDescricao }}</td>
+        <td>{{ l.dataLancamento | date:'dd/MM/yyyy':'UTC' }}</td>
+        <td>{{ l.valor | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</td>
+        <td> <!-- ADICIONADO -->
+          <button class="btn btn-sm btn-primary" (click)="selecionarParaEditar(l)">Editar</button>
+        </td>
+      </tr>
+    } @empty { <tr><td colspan="5">Nenhum lançamento.</td></tr> } <!-- ALTERADO colspan 4->5 -->
+  </tbody>
+</table>
