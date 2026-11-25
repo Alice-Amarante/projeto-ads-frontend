@@ -28,12 +28,10 @@
     <input class="form-control" formControlName="observacao">
   </div>
   <div class="col-12">
-    <!-- CORRIGIDO: Adicionado os parênteses () no lancamentoSelecionado -->
     <button class="btn btn-primary" type="submit" [disabled]="salvando()">
       {{ salvando() ? 'Salvando...' : (lancamentoSelecionado() ? 'Salvar alterações' : 'Cadastrar lançamento') }}
     </button>
 
-    <!-- ADICIONADO: botão Cancelar (Item D) -->
     <button class="btn btn-secondary ms-2" type="button" (click)="cancelar()">
       Cancelar
     </button>

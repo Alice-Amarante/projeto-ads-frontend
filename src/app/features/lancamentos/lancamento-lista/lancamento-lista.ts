@@ -10,12 +10,13 @@ import { LancamentoForm } from '../lancamento-form/lancamento-form';
   templateUrl: './lancamento-lista.html'
 })
 export class LancamentoLista implements OnInit {
-  readonly usuarioId = 1; // APENAS para laboratório, sem JWT
   lancamentos = signal<LancamentoResponse[]>([]);
   carregando = signal(false);
   erro = signal('');
 
-  // ADICIONADO: signal do lançamento selecionado (Item A)
+  // ADICIONADO: propriedade que o HTML estava pedindo
+  usuarioId = 1; // Coloquei um valor fixo só para compilar. Idealmente isso vem do AuthService.
+
   lancamentoSelecionado = signal<LancamentoResponse | null>(null);
 
   constructor(private lancamentoService: LancamentoService) {}
@@ -24,7 +25,7 @@ export class LancamentoLista implements OnInit {
   carregar(): void {
     this.carregando.set(true);
     this.erro.set('');
-    this.lancamentoService.listar(this.usuarioId).subscribe({
+    this.lancamentoService.listar().subscribe({
       next: dados => {
         this.lancamentos.set(dados);
         this.carregando.set(false);
@@ -37,12 +38,10 @@ export class LancamentoLista implements OnInit {
     });
   }
 
-  // ADICIONADO: seleciona o lançamento para edição (Item A)
   selecionarParaEditar(l: LancamentoResponse): void {
     this.lancamentoSelecionado.set(l);
   }
 
-  // ADICIONADO: limpa a seleção (Item D)
   cancelarEdicao(): void {
     this.lancamentoSelecionado.set(null);
   }
